@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +23,9 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private float[] accelerometerValues;
     private List<String> sequence;
     private int currentIndex = 0;
-    private int score = 0;
+    private int score;
     private boolean isProcessing = false;
+    private TextView scoreTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,9 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        scoreTextView = findViewById(R.id.scoreText);
+        updateScoreDisplay();
     }
 
     @Override
@@ -72,6 +77,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                 if (currentIndex == sequence.size()) {
                     // Award points for completing the sequence
                     score += sequence.size();
+                    updateScoreDisplay();  // Update score display
 
                     // Pass sequence to the next activity
                     Intent intent = new Intent(PlayActivity.this, SequenceActivity.class);
@@ -110,6 +116,10 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         for (int i = 0; i < length; i++) {
             sequence.add(colors[random.nextInt(colors.length)]); // Add random color to the sequence
         }
+    }
+
+    private void updateScoreDisplay() {
+        scoreTextView.setText("Score: " + score);  // Update the TextView with the current score
     }
 
     @Override

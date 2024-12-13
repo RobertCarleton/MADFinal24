@@ -3,7 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFB6C1">
+    android:background="#624747">
+
+    <!-- Score -->
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score: 0"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_centerInParent="true"
+        android:padding="16dp"/>
 
     <!-- Top Circle (Purple) -->
     <ImageView
