@@ -73,11 +73,11 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
             if (direction.equals(sequence.get(currentIndex))) {
                 currentIndex++;
+                score++;
+                updateScoreDisplay();
                 // If the player has completed the entire sequence
                 if (currentIndex == sequence.size()) {
                     // Award points for completing the sequence
-                    score += sequence.size();
-                    updateScoreDisplay();  // Update score display
 
                     // Pass sequence to the next activity
                     Intent intent = new Intent(PlayActivity.this, SequenceActivity.class);
