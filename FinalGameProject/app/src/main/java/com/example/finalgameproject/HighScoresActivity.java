@@ -1,43 +1,48 @@
 package com.example.finalgameproject;
 
+import android.app.Activity;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
-public class HighScoresActivity extends AppCompatActivity {
-    private SQLiteDatabase database;
+public class HighScoresActivity extends Activity {
+
+    private HighScoresDBHelper dbHelper;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_scores);
 
-        HighScoresDBHelper dbHelper = new HighScoresDBHelper(this);
-        database = dbHelper.getReadableDatabase();
+        dbHelper = new HighScoresDBHelper(this);
+        listView = findViewById(R.id.list_high_scores);
 
-        TextView highScoresText = findViewById(R.id.high_scores_list);
-        highScoresText.setText(getHighScores());
+        displayHighScores();
     }
 
-    private String getHighScores() {
-        StringBuilder highScores = new StringBuilder();
-        Cursor cursor = database.query(
-                HighScoresDBHelper.TABLE_NAME,
-                null, null, null, null, null,
-                HighScoresDBHelper.COLUMN_SCORE + " DESC",
-                "5"
+    private void displayHighScores() {
+        Cursor cursor = dbHelper.getTopFiveScores();
+
+        String[] fromColumns = {"name", "score"};
+        int[] toViews = {R.id.text_name, R.id.text_score};
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                this,
+                R.layout.high_score_item,
+                cursor,
+                fromColumns,
+                toViews,
+                0
         );
 
-        int rank = 1;
-        while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndex(HighScoresDBHelper.COLUMN_NAME));
-            int score = cursor.getInt(cursor.getColumnIndex(HighScoresDBHelper.COLUMN_SCORE));
-            highScores.append(rank).append(". ").append(name).append(" - ").append(score).append("\n");
-            rank++;
-        }
-        cursor.close();
-        return highScores.toString();
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
     }
 }

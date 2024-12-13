@@ -1,5 +1,4 @@
 package com.example.finalgameproject;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -58,5 +57,55 @@ public class HighScoresDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
         db.close();
+    }
+
+    // Check if the given score qualifies as a high score (top 5)
+    public boolean isHighScore(int score) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_NAME,
+                new String[]{COLUMN_SCORE},
+                null, null, null, null,
+                COLUMN_SCORE + " DESC",
+                "5"
+        );
+
+        if (cursor.moveToLast()) { // Move to the lowest score in the top 5
+            int lowestHighScore = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCORE));
+            cursor.close();
+            return score > lowestHighScore; // True if the new score is higher
+        }
+
+        cursor.close();
+        return true; // No scores in the DB yet, so it's a high score
+    }
+
+    // Insert a score only if it qualifies as a high score
+    public void insertScore(String name, int score) {
+        if (isHighScore(score)) {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NAME, name);
+            values.put(COLUMN_SCORE, score);
+            db.insert(TABLE_NAME, null, values);
+
+            // Remove scores beyond the top 5
+            Cursor cursor = db.query(
+                    TABLE_NAME,
+                    new String[]{COLUMN_ID},
+                    null, null, null, null,
+                    COLUMN_SCORE + " DESC",
+                    "5, -1" // Skip the top 5
+            );
+
+            if (cursor.moveToNext()) { // If there are extra scores
+                int idToRemove = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+                db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(idToRemove)});
+            }
+
+            cursor.close();
+            db.close();
+        }
     }
 }
