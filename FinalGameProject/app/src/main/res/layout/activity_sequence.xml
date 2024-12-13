@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SequenceActivity">
+    android:orientation="vertical"
+    android:background="#FFB6C1">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Top Circle (Purple) -->
+    <ImageView
+        android:id="@+id/purple_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/purple_circle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:contentDescription="@string/purple_circle" />
+
+    <!-- Bottom Circle (Green) -->
+    <ImageView
+        android:id="@+id/green_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/green_circle"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/green_circle" />
+
+    <!-- Left Circle (Red) -->
+    <ImageView
+        android:id="@+id/red_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/red_circle"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="40dp"
+        android:contentDescription="@string/red_circle" />
+
+    <!-- Right Circle (Blue) -->
+    <ImageView
+        android:id="@+id/blue_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/blue_circle"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="40dp"
+        android:contentDescription="@string/blue_circle" />
+
+</RelativeLayout>

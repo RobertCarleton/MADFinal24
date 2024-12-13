@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FinalGameProject</string>
+    <string name="purple_circle">Purple Circle</string>
+    <string name="green_circle">Green Circle</string>
+    <string name="red_circle">Red Circle</string>
+    <string name="blue_circle">Blue Circle</string>
 </resources>
