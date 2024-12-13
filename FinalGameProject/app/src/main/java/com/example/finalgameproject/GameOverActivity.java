@@ -3,7 +3,6 @@ package com.example.finalgameproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -66,7 +65,7 @@ public class GameOverActivity extends Activity {
 
     private void saveHighScore() {
         EditText editName = findViewById(R.id.edit_player_name);
-        String playerName = editName.getText().toString();
+        String playerName = editName.getText().toString().trim();
 
         if (playerName.isEmpty()) {
             Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show();
@@ -75,6 +74,10 @@ public class GameOverActivity extends Activity {
 
         dbHelper.insertScore(playerName, finalScore);
         Toast.makeText(this, "Score saved!", Toast.LENGTH_SHORT).show();
+
+        // Disable further saving
+        findViewById(R.id.button_save_score).setEnabled(false);
+        editName.setEnabled(false);
     }
 
     private void viewHighScores() {
@@ -95,4 +98,3 @@ public class GameOverActivity extends Activity {
         super.onDestroy();
     }
 }
-

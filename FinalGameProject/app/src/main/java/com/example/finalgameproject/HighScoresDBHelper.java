@@ -44,12 +44,16 @@ public class HighScoresDBHelper extends SQLiteOpenHelper {
 
     public Cursor getTopFiveScores() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(
+        /*return db.query(
                 TABLE_NAME,
                 new String[]{COLUMN_NAME, COLUMN_SCORE},
                 null, null, null, null,
                 COLUMN_SCORE + " DESC",
                 "5"
+        );*/
+        return db.rawQuery(
+                "SELECT id AS _id, name, score FROM high_scores ORDER BY score DESC LIMIT 5",
+                null
         );
     }
 
@@ -73,7 +77,10 @@ public class HighScoresDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToLast()) { // Move to the lowest score in the top 5
             int lowestHighScore = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCORE));
             cursor.close();
-            return score > lowestHighScore; // True if the new score is higher
+            if (cursor.getCount() < 5 || score > lowestHighScore) {
+                return true; // Always qualifies if less than 5 scores are stored
+            }
+
         }
 
         cursor.close();
@@ -108,4 +115,6 @@ public class HighScoresDBHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
+
+
 }

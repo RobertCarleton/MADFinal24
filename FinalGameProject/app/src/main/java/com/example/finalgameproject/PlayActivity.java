@@ -89,7 +89,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
             } else {
                 // If the player fails, go to the game over screen
                 Intent intent = new Intent(PlayActivity.this, GameOverActivity.class);
-                intent.putExtra("score", score); // Pass score to GameOverActivity
+                intent.putExtra("FINAL_SCORE", score); // Pass score to GameOverActivity
                 startActivity(intent);
                 finish(); // Ensure PlayActivity is removed
             }
